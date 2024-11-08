@@ -10,7 +10,7 @@ This project uses the ROS2 Humble distribution and assumed to be a dependency
 ## Building the Code
 
 ```
-# Make a workspace directory
+ $ # Make a workspace directory
 mkdir -p ~/ros2_ws/src
 
 # Go to the directory and clone the repository
