@@ -15,6 +15,7 @@
 #include <chrono>
 #include <functional>
 #include <memory>
+#include <rclcpp/logging.hpp>
 #include <string>
 
 #include "beginner_tutorials/srv/detail/change_string__struct.hpp"
@@ -30,20 +31,27 @@ using namespace std::chrono_literals;
 class TextPublisher : public rclcpp::Node {
  public:
   TextPublisher() : Node("text_publisher"), count_(0) {
+    this->declare_parameter("publish_frequency", 600);
     publisher_ = this->create_publisher<std_msgs::msg::String>("topic", 10);
     service_ = this->create_service<beginner_tutorials::srv::ChangeString>(
         "change_string",
         std::bind(&TextPublisher::change_str, this,
                   std::placeholders::_1, std::placeholders::_2));
+
+
+    if(this->get_parameter("publish_frequency").as_int()==500){
+      RCLCPP_WARN_STREAM(this->get_logger(), "Changing publish frequency");
+    };
+
     timer_ = this->create_wall_timer(
-        500ms, std::bind(&TextPublisher::timer_callback, this));
+        std::chrono::milliseconds(this->get_parameter("publish_frequency").as_int()), std::bind(&TextPublisher::timer_callback, this));
   }
 
  private:
   void timer_callback() {
     auto message = std_msgs::msg::String();
     message.data = "This is assignment 1 " + std::to_string(count_++);
-    RCLCPP_INFO(this->get_logger(), "Publishing: '%s'", message.data.c_str());
+    RCLCPP_INFO_STREAM(this->get_logger(), "Publishing: "<< message.data);
     publisher_->publish(message);
   }
 
@@ -56,6 +64,7 @@ class TextPublisher : public rclcpp::Node {
     RCLCPP_DEBUG_STREAM(this->get_logger(),
                         "Received Service Request: " << request->new_string);
   }
+
   std_msgs::msg::String message;
   rclcpp::Service<beginner_tutorials::srv::ChangeString>::SharedPtr service_;
   rclcpp::TimerBase::SharedPtr timer_;
@@ -65,7 +74,11 @@ class TextPublisher : public rclcpp::Node {
 
 int main(int argc, char* argv[]) {
   rclcpp::init(argc, argv);
-  rclcpp::spin(std::make_shared<TextPublisher>());
+
+  auto node = std::make_shared<TextPublisher>();
+  rclcpp::spin(node);
+
+  RCLCPP_FATAL_STREAM(node->get_logger(), "This is a example fatal message");
   rclcpp::shutdown();
   return 0;
 }
