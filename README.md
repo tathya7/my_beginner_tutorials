@@ -1,6 +1,6 @@
-# ROS2 - Beginner Tutorials - Part 1
+# ROS2 - Beginner Tutorials - Part 2
 
-This repository contains the five tutorial series of the ROS2 Beginner Tutorials. The branch `ros_pub_sub` contains the simple C++ publisher subscriber node as a part of assignment one. Made by **Tathya Bhatt** for the course *ENPM700-Software Development for Robotics*
+This repository contains the five tutorial series of the ROS2 Beginner Tutorials. The branch `ros_services_logging_launch` contains the simple C++ publisher subscriber node as a part of assignment one. Further a service to modify the string was added and a launch file is created with a parameter to it. Made by **Tathya Bhatt** for the course *ENPM700-Software Development for Robotics*
 
 
 ## Dependencies
