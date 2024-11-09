@@ -10,7 +10,7 @@ This project uses the ROS2 Humble distribution and assumed to be a dependency
 ## Building the Code
 
 ```
- $ # Make a workspace directory
+# Make a workspace directory
 mkdir -p ~/ros2_ws/src
 
 # Go to the directory and clone the repository
@@ -20,7 +20,7 @@ git clone
 rosdep install -i --from-path src --rosdistro humble -y
 
 # Go back to the workspace folder and build the package
-colcon build --packages-select beginner_tutorials --cmake-args -DCMAKE_EXPORT_COMPILE_COMMANDS=1
+colcon build --packages-select beginner_tutorials
 
 # After successful build, source the package
 source install/setup.bash
@@ -30,6 +30,10 @@ ros2 run beginner_tutorials talker
 
 # Run the subscriber in terminal 2
 ros2 run beginner_tutorials listener
+
+# To run the service, go to your workspace and run the below commmand
+ros2 service call /change_string beginner_tutorials/srv/ChangeString "{new_string: 'MyNewString'}"
+
 
 ```
 
@@ -43,7 +47,9 @@ cd ~/ros_ws/src/beginner_tutorials/src
 clang-format -style=Google -i subscriber__member_function.cpp
 clang-format -style=Google -i publisher__member_function.cpp
 
-# Go back to package directory and perform clang-tidy checks
+# Go back to workspace directory and perform clang-tidy checks
+cd ..
+cd ..
 cd ..
 clang-tidy -p build/ src/beginner_tutorials/src/*.cpp
 
