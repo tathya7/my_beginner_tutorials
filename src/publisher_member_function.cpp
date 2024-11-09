@@ -57,7 +57,7 @@ class TextPublisher : public rclcpp::Node {
 
     if (this->get_parameter("publish_frequency").as_int() == 300) {
       RCLCPP_WARN_STREAM(this->get_logger(), "Changing publish frequency");
-    };
+    }
 
     timer_ = this->create_wall_timer(
         std::chrono::milliseconds(
