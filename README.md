@@ -25,11 +25,8 @@ colcon build --packages-select beginner_tutorials
 # After successful build, source the package
 source install/setup.bash
 
-# Run the publisher in terminal1
-ros2 run beginner_tutorials talker
-
-# Run the subscriber in terminal 2
-ros2 run beginner_tutorials listener
+# Launch both the nodes using the command
+ros2 launch beginner_tutorials talker.launch.py
 
 # To run the service, go to your workspace and run the below commmand
 ros2 service call /change_string beginner_tutorials/srv/ChangeString "{new_string: 'MyNewString'}"
