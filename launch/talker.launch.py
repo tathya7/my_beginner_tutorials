@@ -8,7 +8,7 @@ from launch.substitutions import LaunchConfiguration, TextSubstitution
 
 def generate_launch_description():
     publisher_freq_arg = DeclareLaunchArgument(
-        "publish_freq", default_value=TextSubstitution(text="600")
+        "publish_freq", default_value=TextSubstitution(text="300")
     )
 
     talker_ = Node(
