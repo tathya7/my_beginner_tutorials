@@ -17,4 +17,10 @@ def generate_launch_description():
         parameters=[{'publish_frequency': LaunchConfiguration('publish_freq')}]
     )
 
+    listener_ = Node(
+        package="beginner_tutorials",
+        executable="listener",
+    )
+
     return LaunchDescription([publisher_freq_arg, talker_])
+

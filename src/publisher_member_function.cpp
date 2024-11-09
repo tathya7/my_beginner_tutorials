@@ -29,7 +29,6 @@
 #include <string>
 
 #include "beginner_tutorials/srv/detail/change_string__struct.hpp"
->>>>>>> ros_services_logging_launch
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/string.hpp"
 
