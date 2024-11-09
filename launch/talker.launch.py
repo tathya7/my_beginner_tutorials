@@ -22,5 +22,5 @@ def generate_launch_description():
         executable="listener",
     )
 
-    return LaunchDescription([publisher_freq_arg, talker_])
+    return LaunchDescription([publisher_freq_arg, talker_, listener_])
 
