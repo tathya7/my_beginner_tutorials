@@ -1,39 +1,77 @@
 # ROS2 - Beginner Tutorials - Part 2
 
-This repository contains the five tutorial series of the ROS2 Beginner Tutorials. The branch `ros_services_logging_launch` contains the simple C++ publisher subscriber node as a part of assignment one. Further a service to modify the string was added and a launch file is created with a parameter to it. Made by **Tathya Bhatt** for the course *ENPM700-Software Development for Robotics*
+This repository contains the five tutorial series of the ROS2 Beginner Tutorials. The branch `ros_tf2_unitTest_bagFiles` contains the modified code including the Level 2 Integration Test, the recorded bag file and the tf2_transform broadcast. Made by **Tathya Bhatt** for the course *ENPM700-Software Development for Robotics*
 
 
 ## Dependencies
 
-This project uses the ROS2 Humble distribution and assumed to be a dependency
+This project uses the ROS2 Humble distribution.
 
-## Building the Code
+## Building & Running Steps
 
+- ### Cloning the package into a workspace folder:
 ```
 # Make a workspace directory
 mkdir -p ~/ros2_ws/src
 
 # Go to the directory and clone the repository
-git clone 
+git clone https://github.com/tathya7/my_beginner_tutorials.git
 
 #  Install resdep dependencies before building the package
 rosdep install -i --from-path src --rosdistro humble -y
-
+```
+- ### Build the package and source:
+```
 # Go back to the workspace folder and build the package
 colcon build --packages-select beginner_tutorials
 
 # After successful build, source the package
 source install/setup.bash
 
-# Launch both the nodes using the command
-ros2 launch beginner_tutorials talker.launch.py
+```
 
-# To run the service, go to your workspace and run the below commmand
-ros2 service call /change_string beginner_tutorials/srv/ChangeString "{new_string: 'MyNewString'}"
+- ### Run the publisher node:
+```
+ros2 run beginner_tutorials talker
+```
 
+- ### Run the subscriber node:
+```
+ros2 run beginner_tutorials listener
+```
+
+- ### Call the service using ROS2 Command Line Tool:
+```
+ros2 service call /change_string beginner_tutorials/srv ChangeString "{new_string: 'MyNewString'}"
+```
+
+- ### Use launch file to start the publisher and record a rosbag using:
+    The bag will be saved in your root of the workspace in a folder called "my_bag".
+```
+ros2 launch beginner_tutorials talker.launch.py record_bag:=1
 
 ```
-## Catch2 Test Output Log
+- ### To check if the bag files have been recorded:
+```
+cd my_bag/
+ros2 bag infor my_bag
+
+```
+- ### Playing the recorded bag:
+```
+# Run the subscriber in a new terminal
+ros2 run beginner_tutorials listener
+
+# In another terminal, go the bag directory and play the bag
+ros2 bag play my_bag_0.db3
+```
+- ### To run the integration test:
+```
+cd ros2_ws/
+colcon test  --return-code-on-test-failure --event-handlers console_cohesion+
+```
+
+- ### Catch2 Test Output Log
 ```
 1: Test command: /home/tathyab/anaconda3/bin/python3 "-u" "/opt/ros/humble/share/catch_ros2/cmake/../scripts/run_test.py" "/home/tathyab/my_beginner_tutorials/build/beginner_tutorials/test_results/beginner_tutorials/ExampleIntegration_TestPython.xml" "--package-name" "beginner_tutorials" "--command" "ros2" "launch" "beginner_tutorials" "test.launch.py" "result_file:=/home/tathyab/my_beginner_tutorials/build/beginner_tutorials/test_results/beginner_tutorials/ExampleIntegration_TestPython.xml"
 1: Test timeout computed to be: 60
@@ -87,7 +125,8 @@ cd ..
 clang-tidy -p build/ src/beginner_tutorials/src/*.cpp
 
 # Static code analysis, go to the package directory 
-cpplint --filter=-build/c++11,+build/c++17,-build/namespaces,-build/include_order  src/*.cpp >  results/cpplint.txt
+cd src/beginner_tutorials
+cpplint --filter=-build/c++11,+build/c++17,-build/namespaces,-build/include_order  src/*.cpp > cpplint.txt
 
 ```
 ## Author
