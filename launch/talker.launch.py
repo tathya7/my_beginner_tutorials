@@ -11,16 +11,20 @@ def generate_launch_description():
         "publish_freq", default_value=TextSubstitution(text="300")
     )
 
+    record_bag_flag = DeclareLaunchArgument(
+        "record_flag", default_value=TextSubstitution(text="1")
+    )
+
     talker_ = Node(
         package="beginner_tutorials",
         executable="talker",
-        parameters=[{'publish_frequency': LaunchConfiguration('publish_freq')}]
+        parameters=[{'publish_frequency': LaunchConfiguration('publish_freq'), 'record_bag' : LaunchConfiguration('record_bag')}]
     )
 
-    listener_ = Node(
-        package="beginner_tutorials",
-        executable="listener",
-    )
+    # listener_ = Node(
+    #     package="beginner_tutorials",
+    #     executable="listener",
+    # )
 
-    return LaunchDescription([publisher_freq_arg, talker_, listener_])
+    return LaunchDescription([publisher_freq_arg, record_bag_flag, talker_])
 
