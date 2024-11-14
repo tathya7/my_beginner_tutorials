@@ -54,7 +54,7 @@ ros2 launch beginner_tutorials talker.launch.py record_bag:=1
 - ### To check if the bag files have been recorded:
 ```
 cd my_bag/
-ros2 bag infor my_bag
+ros2 bag info my_bag_0.db3
 
 ```
 - ### Playing the recorded bag:
