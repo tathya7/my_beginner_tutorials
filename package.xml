@@ -25,5 +25,6 @@
   <depend>std_msgs</depend>
   <depend>geometry_msgs</depend>
   <depend>tf2_ros</depend>
+  <depend>rosbag2_cpp</depend>
   
 </package>

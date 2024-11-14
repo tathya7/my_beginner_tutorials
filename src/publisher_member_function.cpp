@@ -33,6 +33,7 @@
 #include "beginner_tutorials/srv/detail/change_string__struct.hpp"
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/string.hpp"
+#include <rosbag2_cpp/writer.hpp>
 
 using namespace std::chrono_literals;
 
@@ -50,6 +51,12 @@ class TextPublisher : public rclcpp::Node {
    */
   TextPublisher() : Node("text_publisher"), count_(0) {
     this->declare_parameter("publish_frequency", 300);
+    // parameter to record a bag
+    this->declare_parameter("record_bag", 1);
+
+    writer_ = std::make_unique<rosbag2_cpp::Writer>();
+    writer_->open("my_bag");
+
     publisher_ = this->create_publisher<std_msgs::msg::String>("topic", 10);
     service_ = this->create_service<beginner_tutorials::srv::ChangeString>(
         "change_string",
@@ -67,8 +74,6 @@ class TextPublisher : public rclcpp::Node {
         std::chrono::milliseconds(
             this->get_parameter("publish_frequency").as_int()),
         std::bind(&TextPublisher::timer_callback, this));
-
-    this->broadcast_static_transform();
   }
 
  private:
@@ -81,6 +86,12 @@ class TextPublisher : public rclcpp::Node {
     message.data = "This is assignment 1 " + std::to_string(count_++);
     RCLCPP_INFO_STREAM(this->get_logger(), "Publishing: " << message.data);
     publisher_->publish(message);
+    this->broadcast_static_transform();
+
+    if (this->get_parameter("record_bag").as_int() == 1){
+      rclcpp::Time time_stamp = this->now();
+      writer_->write(message, "topic", time_stamp);
+    }
   }
   /**
    * @brief Service callback function
@@ -119,6 +130,11 @@ class TextPublisher : public rclcpp::Node {
 
     tf_static_broadcaster_->sendTransform(t);
 
+    if (this->get_parameter("record_bag").as_int() == 1){
+      rclcpp::Time time_stamp = this->now();
+      writer_->write(t, "topic", time_stamp);
+    }
+
   }
 
   std_msgs::msg::String message;
@@ -127,6 +143,7 @@ class TextPublisher : public rclcpp::Node {
   rclcpp::Publisher<std_msgs::msg::String>::SharedPtr publisher_;
   size_t count_;
   std::shared_ptr<tf2_ros::StaticTransformBroadcaster> tf_static_broadcaster_;
+  std::unique_ptr<rosbag2_cpp::Writer> writer_;
 
 };
 

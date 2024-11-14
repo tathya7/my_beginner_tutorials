@@ -18,6 +18,7 @@ find_package(rosidl_default_generators REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(tf2_ros REQUIRED)
 find_package(catch_ros2 REQUIRED)
+find_package(rosbag2_cpp REQUIRED)
 
 rosidl_generate_interfaces(${PROJECT_NAME}
   "srv/ChangeString.srv"
@@ -31,7 +32,7 @@ add_executable(integration_test test/test.cpp)
 ament_target_dependencies(integration_test rclcpp std_msgs)
 
 add_executable(talker src/publisher_member_function.cpp)
-ament_target_dependencies(talker geometry_msgs rclcpp tf2 tf2_ros std_msgs)
+ament_target_dependencies(talker geometry_msgs rclcpp tf2 tf2_ros std_msgs rosbag2_cpp)
 
 add_executable(listener src/subscriber_member_function.cpp)
 ament_target_dependencies(listener rclcpp std_msgs)
