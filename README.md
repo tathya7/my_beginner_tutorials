@@ -77,8 +77,8 @@ Total Test time (real) =   1.22 sec
 cd ~/ros_ws/src/beginner_tutorials/src
 
 # Format and modify the code 
-clang-format -style=Google -i subscriber__member_function.cpp
-clang-format -style=Google -i publisher__member_function.cpp
+clang-format -style=Google -i subscriber_member_function.cpp
+clang-format -style=Google -i publisher_member_function.cpp
 
 # Go back to workspace directory and perform clang-tidy checks
 cd ..
@@ -86,7 +86,7 @@ cd ..
 cd ..
 clang-tidy -p build/ src/beginner_tutorials/src/*.cpp
 
-# Static code analysis
+# Static code analysis, go to the package directory 
 cpplint --filter=-build/c++11,+build/c++17,-build/namespaces,-build/include_order  src/*.cpp >  results/cpplint.txt
 
 ```
